@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/todo")
@@ -25,5 +27,11 @@ public class TodoController {
     @GetMapping("/{id}")
     public TodoResponseDto getTodo(@PathVariable Long id) {
         return todoService.getTodo(id);
+    }
+
+    // 할일카드 목록 조회
+    @GetMapping
+    public List<TodoResponseDto> getTodoList() {
+        return todoService.getTodoList();
     }
 }

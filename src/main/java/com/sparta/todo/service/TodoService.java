@@ -7,6 +7,8 @@ import com.sparta.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TodoService {
@@ -30,5 +32,10 @@ public class TodoService {
                 );
 
         return new TodoResponseDto(todo);
+    }
+
+    // 할일카드 목록 조회
+    public List<TodoResponseDto> getTodoList() {
+        return todoRepository.findAll().stream().map(TodoResponseDto::new).toList();
     }
 }
