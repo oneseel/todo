@@ -6,6 +6,7 @@ import com.sparta.todo.dto.TodoUpdateRequestDto;
 import com.sparta.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +20,36 @@ public class TodoController {
 
     // 할일카드 작성
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) // 상태 번호 201
-    public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) {
-        return todoService.createTodo(requestDto);
+    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto requestDto) {
+        TodoResponseDto responseDto = todoService.createTodo(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     // 선택한 할일카드 조회
     @GetMapping("/{id}")
-    public TodoResponseDto getTodo(@PathVariable Long id) {
-        return todoService.getTodo(id);
+    public ResponseEntity<TodoResponseDto> getTodo(@PathVariable Long id) {
+        TodoResponseDto responseDto = todoService.getTodo(id);
+        return ResponseEntity.ok(responseDto);
     }
 
     // 할일카드 목록 조회
     @GetMapping
-    public List<TodoResponseDto> getTodoList() {
-        return todoService.getTodoList();
+    public ResponseEntity<List<TodoResponseDto>> getTodoList() {
+        List<TodoResponseDto> responseDto = todoService.getTodoList();
+        return ResponseEntity.ok(responseDto);
     }
 
     // 선택한 할일카드 수정
     @PatchMapping("/{id}")
-    public TodoResponseDto updateTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto requestDto) {
-        return todoService.updateTodo(id, requestDto);
+    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto requestDto) {
+        TodoResponseDto responseDto = todoService.updateTodo(id, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     // 선택한 할일카드 삭제
     @DeleteMapping("/{id}")
-    public void deleteTodo(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
+        return ResponseEntity.noContent().build();
     }
 }
