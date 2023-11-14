@@ -2,6 +2,7 @@ package com.sparta.todo.controller;
 
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
+import com.sparta.todo.dto.TodoUpdateRequestDto;
 import com.sparta.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,11 @@ public class TodoController {
     @GetMapping
     public List<TodoResponseDto> getTodoList() {
         return todoService.getTodoList();
+    }
+
+    // 선택한 할일카드 수정
+    @PatchMapping("/{id}")
+    public TodoResponseDto updateTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto requestDto) {
+        return todoService.updateTodo(id, requestDto);
     }
 }
