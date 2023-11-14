@@ -41,4 +41,10 @@ public class TodoController {
     public TodoResponseDto updateTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto requestDto) {
         return todoService.updateTodo(id, requestDto);
     }
+
+    // 선택한 할일카드 삭제
+    @DeleteMapping("/{id}")
+    public void deleteTodo(@PathVariable Long id) {
+        todoService.deleteTodo(id);
+    }
 }

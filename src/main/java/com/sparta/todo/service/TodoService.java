@@ -50,6 +50,13 @@ public class TodoService {
         return new TodoResponseDto(todo);
     }
 
+    // 선택한 할일카드 삭제
+    public void deleteTodo(Long id) {
+        Todo todo = getTodoCard(id);
+
+        todoRepository.delete(todo);
+    }
+
     private Todo getTodoCard(Long id) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
