@@ -14,10 +14,16 @@ public class TodoController {
 
     private final TodoService todoService;
 
-
+    // 할일카드 작성
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // 상태 번호 201
     public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) {
         return todoService.createTodo(requestDto);
+    }
+
+    // 선택한 할일카드 조회
+    @GetMapping("/{id}")
+    public TodoResponseDto getTodo(@PathVariable Long id) {
+        return todoService.getTodo(id);
     }
 }
