@@ -18,8 +18,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     // 할일카드 작성
-    public  TodoResponseDto createTodo(TodoRequestDto requestDto) {
-        // Dto -> Entity
+    public TodoResponseDto createTodo(TodoRequestDto requestDto) {
         Todo todo = new Todo(requestDto);
 
         Todo saveTodo = todoRepository.save(todo);
