@@ -11,13 +11,11 @@ public class TodoResponseDto {
     private String title;
     private String contents;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
     public TodoResponseDto(Todo saveTodo) {
         this.id = saveTodo.getId();
         this.title = saveTodo.getTitle();
         this.contents = saveTodo.getContents();
         this.createdAt = saveTodo.getCreatedAt();
-        this.modifiedAt = saveTodo.getModifiedAt();
     }
 }
