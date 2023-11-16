@@ -26,6 +26,9 @@ public class Todo extends Timestamped {
     @Column(nullable = false, length = 1000)
     String contents;
 
+    @Column(nullable = false)
+    String author;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -33,6 +36,7 @@ public class Todo extends Timestamped {
     public Todo(TodoRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.author = user.getUsername();
         this.user = user;
     }
 

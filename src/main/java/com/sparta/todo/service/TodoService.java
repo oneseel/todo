@@ -25,12 +25,7 @@ public class TodoService {
 
     // 할일카드 작성
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        // 현재 로그인한 사용자의 정보를 가져오기
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
+        User user = getUser();
 
         // Todo에 작성자 정보 추가
         Todo todo = new Todo(requestDto, user);
@@ -39,6 +34,8 @@ public class TodoService {
 
         return new TodoResponseDto(saveTodo);
     }
+
+
 
     // 선택한 할일카드 조회
     public TodoResponseDto getTodo(Long id) {
@@ -56,6 +53,8 @@ public class TodoService {
     // 선택한 할일카드 수정
     @Transactional
     public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto requestDto) {
+        getUser();
+
         Todo todo = getTodoCard(id);
 
         todo.update(requestDto);
@@ -65,6 +64,8 @@ public class TodoService {
 
     // 선택한 할일카드 삭제
     public void deleteTodo(Long id) {
+        getUser();
+
         Todo todo = getTodoCard(id);
 
         todoRepository.delete(todo);
@@ -75,5 +76,15 @@ public class TodoService {
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
                 );
         return todo;
+    }
+
+    private User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // 현재 로그인한 사용자의 정보를 가져오기
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
+        return user;
     }
 }

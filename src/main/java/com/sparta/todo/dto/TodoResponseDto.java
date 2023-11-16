@@ -9,12 +9,14 @@ import java.time.LocalDateTime;
 public class TodoResponseDto {
     private Long id;
     private String title;
+    private String author;
     private String contents;
     private LocalDateTime createdAt;
 
     public TodoResponseDto(Todo saveTodo) {
         this.id = saveTodo.getId();
         this.title = saveTodo.getTitle();
+        this.author = saveTodo.getAuthor();
         this.contents = saveTodo.getContents();
         this.createdAt = saveTodo.getCreatedAt();
     }
