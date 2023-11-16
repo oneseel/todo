@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class TodoRequestDto {
     private String title;
     private String contents;
+    private String author;
 }

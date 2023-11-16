@@ -4,8 +4,12 @@ import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.dto.TodoUpdateRequestDto;
 import com.sparta.todo.entity.Todo;
+import com.sparta.todo.entity.User;
 import com.sparta.todo.repository.TodoRepository;
+import com.sparta.todo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +21,19 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
+    private final UserRepository userRepository;
+
     // 할일카드 작성
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
-        Todo todo = new Todo(requestDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // 현재 로그인한 사용자의 정보를 가져오기
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
+
+        // Todo에 작성자 정보 추가
+        Todo todo = new Todo(requestDto, user);
 
         Todo saveTodo = todoRepository.save(todo);
 
