@@ -28,7 +28,6 @@ public class TodoService {
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
         User user = getUser();
 
-        // Todo에 작성자 정보 추가
         Todo todo = new Todo(requestDto, user);
 
         Todo saveTodo = todoRepository.save(todo);
@@ -84,10 +83,9 @@ public class TodoService {
 
     // 할일카드 존재 여부
     Todo getTodoCard(Long id) {
-        Todo todo = todoRepository.findById(id)
+        return todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
                 );
-        return todo;
     }
 
     // 회원 존재 여부
@@ -96,8 +94,7 @@ public class TodoService {
         String username = authentication.getName();
 
         // 현재 로그인한 사용자의 정보를 가져오기
-        User user = userRepository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
-        return user;
     }
 }

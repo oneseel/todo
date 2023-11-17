@@ -1,6 +1,7 @@
 package com.sparta.todo.entity;
 
 import com.sparta.todo.dto.CommentRequestDto;
+import com.sparta.todo.dto.CommentUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,10 +32,14 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "todo_id", nullable = false)
     private Todo todo;
 
-    public Comment (CommentRequestDto requestDto, User user, Todo todo) {
+    public Comment(CommentRequestDto requestDto, User user, Todo todo) {
         this.comment = requestDto.getComment();
         this.author = user.getUsername();
         this.user = user;
         this.todo = todo;
+    }
+
+    public void update(CommentUpdateRequestDto requestDto) {
+        this.comment = requestDto.getComment();
     }
 }
