@@ -5,9 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class TodoRequestDto {
-    private String title;
-    private String contents;
-    private String author;
+public class TodoCompletedRequestDto {
     private boolean completed;
 }

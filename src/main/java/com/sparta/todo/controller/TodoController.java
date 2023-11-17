@@ -1,8 +1,10 @@
 package com.sparta.todo.controller;
 
+import com.sparta.todo.dto.TodoCompletedRequestDto;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.dto.TodoUpdateRequestDto;
+import com.sparta.todo.entity.Todo;
 import com.sparta.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,5 +53,12 @@ public class TodoController {
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 할일카드 완료 여부
+    @PatchMapping("/completed/{id}")
+    public ResponseEntity<TodoResponseDto> completedTodo(@PathVariable Long id, @RequestBody TodoCompletedRequestDto requestDto) {
+        TodoResponseDto responseDto = todoService.completedTodo(id, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }

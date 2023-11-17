@@ -1,5 +1,6 @@
 package com.sparta.todo.service;
 
+import com.sparta.todo.dto.TodoCompletedRequestDto;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.dto.TodoUpdateRequestDto;
@@ -71,6 +72,18 @@ public class TodoService {
         todoRepository.delete(todo);
     }
 
+    @Transactional
+    // 할일카드 완료 여부
+    public TodoResponseDto completedTodo(Long id, TodoCompletedRequestDto requestDto) {
+        getUser();
+
+        Todo todo = getTodoCard(id);
+
+        todo.completed(requestDto);
+
+        return new TodoResponseDto(todo);
+    }
+
     private Todo getTodoCard(Long id) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
@@ -87,4 +100,5 @@ public class TodoService {
                 .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
         return user;
     }
+
 }

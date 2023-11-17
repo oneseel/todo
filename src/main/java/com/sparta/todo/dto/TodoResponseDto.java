@@ -12,6 +12,7 @@ public class TodoResponseDto {
     private String author;
     private String contents;
     private LocalDateTime createdAt;
+    private boolean completed;
 
     public TodoResponseDto(Todo saveTodo) {
         this.id = saveTodo.getId();
@@ -19,5 +20,6 @@ public class TodoResponseDto {
         this.author = saveTodo.getAuthor();
         this.contents = saveTodo.getContents();
         this.createdAt = saveTodo.getCreatedAt();
+        this.completed = saveTodo.isCompleted();
     }
 }
