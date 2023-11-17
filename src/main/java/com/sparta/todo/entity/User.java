@@ -27,6 +27,9 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Todo> todos;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;

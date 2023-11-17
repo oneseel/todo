@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,6 +36,9 @@ public class Todo extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public Todo(TodoRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
