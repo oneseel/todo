@@ -3,6 +3,7 @@ package com.sparta.todo.controller;
 import com.sparta.todo.dto.CommentRequestDto;
 import com.sparta.todo.dto.CommentResponseDto;
 import com.sparta.todo.dto.CommentUpdateRequestDto;
+import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,14 @@ public class CommentController {
             @RequestBody CommentUpdateRequestDto requestDto) {
         CommentResponseDto responseDto = commentService.updateComment(requestDto, todo_id, comment_id);
         return ResponseEntity.ok(responseDto);
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{comment_id}")
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable Long todo_id,
+            @PathVariable Long comment_id) {
+        commentService.deleteComment(todo_id, comment_id);
+        return ResponseEntity.noContent().build();
     }
 }

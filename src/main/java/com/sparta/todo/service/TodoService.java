@@ -26,7 +26,7 @@ public class TodoService {
 
     // 할일카드 작성
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
-        User user = getUser();
+        User user = getUser(); // 회원 확인
 
         Todo todo = new Todo(requestDto, user);
 
@@ -36,8 +36,8 @@ public class TodoService {
     }
 
     // 선택한 할일카드 조회
-    public TodoResponseDto getTodo(Long id) {
-        Todo todo = getTodoCard(id);
+    public TodoResponseDto getTodo(Long todo_id) {
+        Todo todo = getTodoCard(todo_id); // 할일카드 확인
 
         return new TodoResponseDto(todo);
     }
@@ -50,10 +50,10 @@ public class TodoService {
 
     // 선택한 할일카드 수정
     @Transactional
-    public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto requestDto) {
-        getUser();
+    public TodoResponseDto updateTodo(Long todo_id, TodoUpdateRequestDto requestDto) {
+        getUser(); // 회원 확인
 
-        Todo todo = getTodoCard(id);
+        Todo todo = getTodoCard(todo_id); // 할일카드 확인
 
         todo.update(requestDto);
 
@@ -62,9 +62,9 @@ public class TodoService {
 
     // 선택한 할일카드 삭제
     public void deleteTodo(Long id) {
-        getUser();
+        getUser(); // 회원 확인
 
-        Todo todo = getTodoCard(id);
+        Todo todo = getTodoCard(id); // 할일카드 확인
 
         todoRepository.delete(todo);
     }
@@ -72,9 +72,9 @@ public class TodoService {
     @Transactional
     // 할일카드 완료 여부
     public TodoResponseDto completedTodo(Long id, TodoCompletedRequestDto requestDto) {
-        getUser();
+        getUser(); // 회원 확인
 
-        Todo todo = getTodoCard(id);
+        Todo todo = getTodoCard(id); // 할일카드 확인
 
         todo.completed(requestDto);
 

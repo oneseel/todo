@@ -18,8 +18,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final UserRepository userRepository;
-
     private final TodoService todoService;
 
     // 댓글 작성
@@ -54,5 +52,16 @@ public class CommentService {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
                 );
+    }
+
+    // 댓글 삭제 여부
+    public void deleteComment(Long todo_id, Long comment_id) {
+        todoService.getUser(); // 회원 확인
+
+        Todo todo = todoService.getTodoCard(todo_id); // 할일카드 확인
+
+        Comment comment = getComment(comment_id); // 댓글 확인
+
+        commentRepository.delete(comment);
     }
 }

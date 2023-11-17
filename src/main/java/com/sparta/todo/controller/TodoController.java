@@ -22,7 +22,8 @@ public class TodoController {
 
     // 할일카드 작성
     @PostMapping
-    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto requestDto) {
+    public ResponseEntity<TodoResponseDto> createTodo(
+            @RequestBody TodoRequestDto requestDto) {
         TodoResponseDto responseDto = todoService.createTodo(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
@@ -43,22 +44,26 @@ public class TodoController {
 
     // 선택한 할일카드 수정
     @PatchMapping("/{user_id}")
-    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto requestDto) {
-        TodoResponseDto responseDto = todoService.updateTodo(id, requestDto);
+    public ResponseEntity<TodoResponseDto> updateTodo(
+            @PathVariable Long user_id,
+            @RequestBody TodoUpdateRequestDto requestDto) {
+        TodoResponseDto responseDto = todoService.updateTodo(user_id, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     // 선택한 할일카드 삭제
     @DeleteMapping("/{user_id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
-        todoService.deleteTodo(id);
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long user_id) {
+        todoService.deleteTodo(user_id);
         return ResponseEntity.noContent().build();
     }
 
     // 할일카드 완료 여부
     @PatchMapping("/completed/{user_id}")
-    public ResponseEntity<TodoResponseDto> completedTodo(@PathVariable Long id, @RequestBody TodoCompletedRequestDto requestDto) {
-        TodoResponseDto responseDto = todoService.completedTodo(id, requestDto);
+    public ResponseEntity<TodoResponseDto> completedTodo(
+            @PathVariable Long user_id,
+            @RequestBody TodoCompletedRequestDto requestDto) {
+        TodoResponseDto responseDto = todoService.completedTodo(user_id, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
