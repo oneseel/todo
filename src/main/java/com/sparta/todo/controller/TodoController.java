@@ -4,7 +4,6 @@ import com.sparta.todo.dto.TodoCompletedRequestDto;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.dto.TodoUpdateRequestDto;
-import com.sparta.todo.entity.Todo;
 import com.sparta.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,8 +29,8 @@ public class TodoController {
 
     // 선택한 할일카드 조회
     @GetMapping("/{user_id}")
-    public ResponseEntity<TodoResponseDto> getTodo(@PathVariable Long id) {
-        TodoResponseDto responseDto = todoService.getTodo(id);
+    public ResponseEntity<TodoResponseDto> getTodo(@PathVariable Long user_id) {
+        TodoResponseDto responseDto = todoService.getTodo(user_id);
         return ResponseEntity.ok(responseDto);
     }
 
