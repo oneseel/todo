@@ -51,9 +51,7 @@ public class TodoService {
     // 선택한 할일카드 수정
     @Transactional
     public TodoResponseDto updateTodo(Long todo_id, TodoUpdateRequestDto requestDto) {
-        getUser(); // 회원 확인
-
-        Todo todo = getTodoCard(todo_id); // 할일카드 확인
+        Todo todo = validateTodoAuthorization(todo_id);
 
         todo.update(requestDto);
 
@@ -61,20 +59,16 @@ public class TodoService {
     }
 
     // 선택한 할일카드 삭제
-    public void deleteTodo(Long id) {
-        getUser(); // 회원 확인
-
-        Todo todo = getTodoCard(id); // 할일카드 확인
+    public void deleteTodo(Long todo_id) {
+        Todo todo = validateTodoAuthorization(todo_id);
 
         todoRepository.delete(todo);
     }
 
     @Transactional
     // 할일카드 완료 여부
-    public TodoResponseDto completedTodo(Long id, TodoCompletedRequestDto requestDto) {
-        getUser(); // 회원 확인
-
-        Todo todo = getTodoCard(id); // 할일카드 확인
+    public TodoResponseDto completedTodo(Long todo_id, TodoCompletedRequestDto requestDto) {
+        Todo todo = validateTodoAuthorization(todo_id);
 
         todo.completed(requestDto);
 
@@ -96,5 +90,18 @@ public class TodoService {
         // 현재 로그인한 사용자의 정보를 가져오기
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
+    }
+
+    // 권한 확인
+    private Todo validateTodoAuthorization(Long todo_id) {
+        User user = getUser(); // 회원 확인
+
+        Todo todo = getTodoCard(todo_id); // 할일카드 확인
+
+        // 현재 로그인한 회원과 할일카드의 작성자가 일치하는지 확인
+        if (!todo.getUser().equals(user)) {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
+        return todo;
     }
 }

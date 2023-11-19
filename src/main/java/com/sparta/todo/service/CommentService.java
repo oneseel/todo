@@ -35,11 +35,7 @@ public class CommentService {
     // 댓글 수정
     @Transactional
     public CommentResponseDto updateComment(CommentUpdateRequestDto requestDto, Long todo_id, Long comment_id) {
-        todoService.getUser(); // 회원 확인
-
-        Todo todo = todoService.getTodoCard(todo_id); // 할일카드 확인
-
-        Comment comment = getComment(comment_id); // 댓글 확인
+        Comment comment = validateCommentAuthorization(todo_id, comment_id);
 
         comment.update(requestDto);
 
@@ -48,11 +44,7 @@ public class CommentService {
 
     // 댓글 삭제 여부
     public void deleteComment(Long todo_id, Long comment_id) {
-        todoService.getUser(); // 회원 확인
-
-        Todo todo = todoService.getTodoCard(todo_id); // 할일카드 확인
-
-        Comment comment = getComment(comment_id); // 댓글 확인
+        Comment comment = validateCommentAuthorization(todo_id, comment_id);
 
         commentRepository.delete(comment);
     }
@@ -62,5 +54,20 @@ public class CommentService {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
                 );
+    }
+
+    // 권한 확인
+    private Comment validateCommentAuthorization(Long todo_id, Long comment_id) {
+        User user = todoService.getUser(); // 회원 확인
+
+        todoService.getTodoCard(todo_id); // 할일카드 확인
+
+        Comment comment = getComment(comment_id); // 댓글 확인
+
+        // 현재 로그인한 회원과 댓글의 작성자가 일치하는지 확인
+        if (!comment.getUser().equals(user)) {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
+        return comment;
     }
 }
