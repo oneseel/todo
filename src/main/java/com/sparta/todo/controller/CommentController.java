@@ -4,7 +4,6 @@ import com.sparta.todo.dto.CommentRequestDto;
 import com.sparta.todo.dto.CommentResponseDto;
 import com.sparta.todo.dto.CommentUpdateRequestDto;
 import com.sparta.todo.service.CommentService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
