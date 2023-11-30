@@ -2,7 +2,7 @@ package com.sparta.todo.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.todo.jwt.JwtUtil;
-import com.sparta.todo.user.dto.LoginRequestDto;
+import com.sparta.todo.user.dto.UserLoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   public JwtAuthenticationFilter(JwtUtil jwtUtil) {
     this.jwtUtil = jwtUtil;
-    setFilterProcessesUrl("/api/todo/login");
+    setFilterProcessesUrl("/api/user/login");
   }
 
   @Override
@@ -29,8 +29,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletResponse response) throws AuthenticationException {
     log.info("로그인 시도");
     try {
-      LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(),
-          LoginRequestDto.class);
+      UserLoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(),
+          UserLoginRequestDto.class);
 
       return getAuthenticationManager().authenticate(
           new UsernamePasswordAuthenticationToken(

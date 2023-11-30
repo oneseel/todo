@@ -18,16 +18,15 @@ import java.net.URLEncoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
-  // Jwt 데이터
   // Header KEY 값
   public static final String AUTHORIZATION_HEADER = "Authorization";
   // Token 식별자
@@ -39,9 +38,6 @@ public class JwtUtil {
   private String secretKey;
   private Key key;
   private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
-  // 로그 설정
-  public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");
 
   @PostConstruct
   public void init() {
@@ -74,7 +70,7 @@ public class JwtUtil {
       // Response 객체에 Cookie 추가
       res.addCookie(cookie);
     } catch (UnsupportedEncodingException e) {
-      logger.error(e.getMessage());
+      log.error(e.getMessage());
     }
   }
 
@@ -83,7 +79,7 @@ public class JwtUtil {
     if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
       return tokenValue.substring(7);
     }
-    logger.error("Not Found Token");
+    log.error("Not Found Token");
     throw new NullPointerException("Not Found Token");
   }
 
@@ -93,13 +89,13 @@ public class JwtUtil {
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
       return true;
     } catch (SecurityException | MalformedJwtException | SignatureException e) {
-      logger.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+      log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
     } catch (ExpiredJwtException e) {
-      logger.error("Expired JWT token, 만료된 JWT token 입니다.");
+      log.error("Expired JWT token, 만료된 JWT token 입니다.");
     } catch (UnsupportedJwtException e) {
-      logger.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+      log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
     } catch (IllegalArgumentException e) {
-      logger.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+      log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
     }
     return false;
   }
