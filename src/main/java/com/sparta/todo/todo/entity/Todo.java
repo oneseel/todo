@@ -18,12 +18,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @Table(name = "todo")
 public class Todo extends Timestamped {
 
@@ -67,4 +70,5 @@ public class Todo extends Timestamped {
   public void completed(TodoCompletedRequestDto requestDto) {
     this.completed = requestDto.isCompleted();
   }
+
 }

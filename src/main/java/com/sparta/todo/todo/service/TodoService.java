@@ -7,7 +7,6 @@ import com.sparta.todo.todo.dto.TodoUpdateRequestDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.repository.TodoRepository;
 import com.sparta.todo.user.entity.User;
-import com.sparta.todo.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
