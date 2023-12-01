@@ -6,7 +6,6 @@ import com.sparta.todo.todo.dto.TodoCompletedRequestDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
 import com.sparta.todo.todo.dto.TodoUpdateRequestDto;
 import com.sparta.todo.user.entity.User;
-import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,7 @@ class TodoTest {
 
   @Test
   @DisplayName("Todo 엔터티 생성 - 성공")
-  void Test1() {
+  void createTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
     todoRequestDto.setTitle("할일카드 제목");
@@ -31,7 +30,6 @@ class TodoTest {
     todo.setId(1L);
 
     // Then
-    System.out.println("todo: " + todo); // 디버깅용 출력
     assertNotNull(todo);
     assertNotNull(todo.getId());
     assertEquals(todoRequestDto.getTitle(), todo.getTitle());
@@ -43,7 +41,7 @@ class TodoTest {
 
   @Test
   @DisplayName("Todo 엔터티 update - 성공")
-  void Test2() {
+  void updateTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
     todoRequestDto.setTitle("기존 제목");
@@ -68,7 +66,7 @@ class TodoTest {
 
   @Test
   @DisplayName("Todo 엔터티 completed - 성공")
-  void completeTodoEntity_Success() {
+  void completeTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
     todoRequestDto.setTitle("할일카드 제목");
