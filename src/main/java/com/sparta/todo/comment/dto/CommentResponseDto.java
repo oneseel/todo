@@ -3,8 +3,10 @@ package com.sparta.todo.comment.dto;
 import com.sparta.todo.comment.entity.Comment;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class CommentResponseDto {
 
   private long id;
