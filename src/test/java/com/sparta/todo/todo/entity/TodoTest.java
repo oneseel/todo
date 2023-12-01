@@ -1,6 +1,9 @@
 package com.sparta.todo.todo.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sparta.todo.todo.dto.TodoCompletedRequestDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
@@ -19,19 +22,17 @@ class TodoTest {
   void createTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
-    todoRequestDto.setTitle("할일카드 제목");
-    todoRequestDto.setContents("할일카드 내용");
+    todoRequestDto.setTitle("title");
+    todoRequestDto.setContents("content");
 
     User user = new User();
-    user.setUsername("작성자");
+    user.setUsername("author");
 
     // When
     Todo todo = new Todo(todoRequestDto, user);
-    todo.setId(1L);
 
     // Then
     assertNotNull(todo);
-    assertNotNull(todo.getId());
     assertEquals(todoRequestDto.getTitle(), todo.getTitle());
     assertEquals(todoRequestDto.getContents(), todo.getContents());
     assertEquals(user.getUsername(), todo.getAuthor());
@@ -44,17 +45,17 @@ class TodoTest {
   void updateTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
-    todoRequestDto.setTitle("기존 제목");
-    todoRequestDto.setContents("기존 내용");
+    todoRequestDto.setTitle("title");
+    todoRequestDto.setContents("content");
 
     User user = new User();
-    user.setUsername("작성자");
+    user.setUsername("author");
 
     Todo todo = new Todo(todoRequestDto, user);
 
     TodoUpdateRequestDto updateRequestDto = new TodoUpdateRequestDto();
-    updateRequestDto.setTitle("새로운 제목");
-    updateRequestDto.setContents("새로운 내용");
+    updateRequestDto.setTitle("title update");
+    updateRequestDto.setContents("content update");
 
     // When
     todo.update(updateRequestDto);
@@ -69,11 +70,11 @@ class TodoTest {
   void completeTodoEntity() {
     // Given
     TodoRequestDto todoRequestDto = new TodoRequestDto();
-    todoRequestDto.setTitle("할일카드 제목");
-    todoRequestDto.setContents("할일카드 내용");
+    todoRequestDto.setTitle("title");
+    todoRequestDto.setContents("content");
 
     User user = new User();
-    user.setUsername("작성자");
+    user.setUsername("author");
 
     Todo todo = new Todo(todoRequestDto, user);
 
