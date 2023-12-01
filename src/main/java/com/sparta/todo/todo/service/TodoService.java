@@ -10,8 +10,6 @@ import com.sparta.todo.user.entity.User;
 import com.sparta.todo.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,23 +19,17 @@ public class TodoService {
 
   private final TodoRepository todoRepository;
 
-  private final UserRepository userRepository;
-
   // 할일카드 작성
-  public TodoResponseDto createTodo(TodoRequestDto requestDto) {
-    User user = getUser(); // 회원 확인
-
-    Todo todo = new Todo(requestDto, user);
-
+  @Transactional
+  public TodoResponseDto createTodo(TodoRequestDto requestDto, User loginUser) {
+    Todo todo = new Todo(requestDto, loginUser);
     Todo saveTodo = todoRepository.save(todo);
-
     return new TodoResponseDto(saveTodo);
   }
 
   // 선택한 할일카드 조회
-  public TodoResponseDto getTodo(Long todo_id) {
-    Todo todo = getTodoCard(todo_id); // 할일카드 확인
-
+  public TodoResponseDto getTodo(Long todoId) {
+    Todo todo = getTodoCard(todoId);
     return new TodoResponseDto(todo);
   }
 
@@ -49,58 +41,34 @@ public class TodoService {
 
   // 선택한 할일카드 수정
   @Transactional
-  public TodoResponseDto updateTodo(Long todo_id, TodoUpdateRequestDto requestDto) {
-    Todo todo = validateTodoAuthorization(todo_id);
-
+  public TodoResponseDto updateTodo(Long todoId, TodoUpdateRequestDto requestDto) {
+    Todo todo = getTodoCard(todoId);
     todo.update(requestDto);
-
     return new TodoResponseDto(todo);
   }
 
   // 선택한 할일카드 삭제
-  public void deleteTodo(Long todo_id) {
-    Todo todo = validateTodoAuthorization(todo_id);
-
+  public void deleteTodo(Long todoId) {
+    Todo todo = getTodoCard(todoId);
     todoRepository.delete(todo);
   }
 
   @Transactional
   // 할일카드 완료 여부
-  public TodoResponseDto completedTodo(Long todo_id, TodoCompletedRequestDto requestDto) {
-    Todo todo = validateTodoAuthorization(todo_id);
-
+  public TodoResponseDto completedTodo(Long todoId, TodoCompletedRequestDto requestDto) {
+    Todo todo = getTodoCard(todoId);
     todo.completed(requestDto);
-
     return new TodoResponseDto(todo);
   }
 
-  // 할일카드 존재 여부
-  public Todo getTodoCard(Long id) {
-    return todoRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("선택한 할일카드가 존재하지 않습니다.")
-        );
+  public Long getAuthorIdByTodoId(Long todoId) {
+    Todo todo = todoRepository.findById(todoId)
+        .orElseThrow(() -> new IllegalArgumentException("해당 할일카드를 찾을 수 없습니다."));
+    return todo.getUser().getId();
   }
 
-  // 회원 존재 여부
-  public User getUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-
-    // 현재 로그인한 사용자의 정보를 가져오기
-    return userRepository.findByUsername(username)
-        .orElseThrow(() -> new IllegalArgumentException("현재 로그인한 사용자를 찾을 수 없습니다."));
-  }
-
-  // 권한 확인
-  private Todo validateTodoAuthorization(Long todo_id) {
-    User user = getUser(); // 회원 확인
-
-    Todo todo = getTodoCard(todo_id); // 할일카드 확인
-
-    // 현재 로그인한 회원과 할일카드의 작성자가 일치하는지 확인
-    if (!todo.getUser().equals(user)) {
-      throw new IllegalArgumentException("권한이 없습니다.");
-    }
-    return todo;
+  public Todo getTodoCard(Long todoId) {
+    return todoRepository.findById(todoId)
+        .orElseThrow(() -> new IllegalArgumentException("해당 할일카드를 찾을 수 없습니다."));
   }
 }
