@@ -3,6 +3,7 @@ package com.sparta.todo.user.entity;
 import com.sparta.todo.comment.entity.Comment;
 import com.sparta.todo.timestamped.Timestamped;
 import com.sparta.todo.todo.entity.Todo;
+import com.sparta.todo.user.dto.UserSignupRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,8 +41,8 @@ public class User extends Timestamped {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Comment> comments;
 
-  public User(String username, String password) {
-    this.username = username;
-    this.password = password;
+  public User(UserSignupRequestDto requestDto) {
+    this.username = requestDto.getUsername();
+    this.password = requestDto.getPassword();
   }
 }
