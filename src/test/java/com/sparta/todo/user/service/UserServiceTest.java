@@ -36,12 +36,12 @@ class UserServiceTest {
 
   @Test
   @DisplayName("회원가입 - 성공")
-  void test1() {
+  void signupSuccess() {
 
     // Given
     UserSignupRequestDto requestDto = new UserSignupRequestDto();
-    requestDto.setUsername("test123");
-    requestDto.setPassword("test123");
+    requestDto.setUsername("username");
+    requestDto.setPassword("password");
 
     given(userRepository.findByUsername(requestDto.getUsername())).willReturn(Optional.empty());
 
@@ -49,7 +49,7 @@ class UserServiceTest {
 
     given(userRepository.save(any(User.class))).willAnswer(invocation -> {
       User savedUser = invocation.getArgument(0);
-      savedUser.setId(100L); // 예시로 ID를 설정
+      savedUser.setId(1L); // 예시로 ID를 설정
       return savedUser;
     });
 
@@ -57,18 +57,18 @@ class UserServiceTest {
     UserResponseDto responseDto = userService.signup(requestDto);
 
     // Then
-    assertEquals("test123", responseDto.getUsername());
+    assertEquals("username", responseDto.getUsername());
     assertNotNull(responseDto.getId());
   }
 
   @Test
   @DisplayName("회원가입 - 실패(중복된 사용자)")
-  void test2() {
+  void signupFail() {
 
     // Given
     UserSignupRequestDto requestDto = new UserSignupRequestDto();
-    requestDto.setUsername("test123");
-    requestDto.setPassword("test123");
+    requestDto.setUsername("username");
+    requestDto.setPassword("password");
 
     User user = new User(requestDto.getUsername(), requestDto.getPassword());
     given(userRepository.findByUsername(requestDto.getUsername())).willReturn(Optional.of(user));

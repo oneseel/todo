@@ -23,7 +23,6 @@ class TodoResponseDtoTest {
     TodoResponseDto responseDto = new TodoResponseDto(todo);
 
     // Then
-    assertNotNull(responseDto);
     assertEquals(1L, responseDto.getId());
     assertEquals("Title", responseDto.getTitle());
     assertEquals("Author", responseDto.getAuthor());
