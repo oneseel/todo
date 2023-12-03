@@ -70,7 +70,7 @@ class UserServiceTest {
     requestDto.setUsername("username");
     requestDto.setPassword("password");
 
-    User user = new User(requestDto.getUsername(), requestDto.getPassword());
+    User user = new User(requestDto);
     given(userRepository.findByUsername(requestDto.getUsername())).willReturn(Optional.of(user));
 
     // When & Then

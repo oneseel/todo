@@ -27,7 +27,7 @@ public class UserService {
     });
 
     // 회원 등록
-    User user = new User(username, password);
+    User user = new User(requestDto);
 
     User saveUser = userRepository.save(user);
 

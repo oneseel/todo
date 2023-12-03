@@ -1,7 +1,8 @@
 package com.sparta.todo.todo.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -18,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class TodoServiceTest {
+class CreateTodoTest {
 
   @Mock
   private TodoRepository todoRepository;
@@ -28,54 +29,56 @@ class TodoServiceTest {
 
   @Test
   @DisplayName("할일카드 작성 - 성공")
-  void Test1() {
+  void createTodoTestSuccess() {
+
     // given
-    TodoRequestDto todoRequestDto = new TodoRequestDto();
-    todoRequestDto.setTitle("할일카드 제목");
-    todoRequestDto.setContents("할일카드 내용");
-    todoRequestDto.setAuthor("작성자");
-    todoRequestDto.setCompleted(false);
+    TodoRequestDto requestDto = new TodoRequestDto();
+    requestDto.setTitle("title");
+    requestDto.setContents("content");
+    requestDto.setCompleted(false);
 
     User loginUser = new User();
+    requestDto.setAuthor(loginUser.getUsername());
 
     Todo todo = new Todo();
     todo.setId(1L);
-    todo.setTitle(todoRequestDto.getTitle());
-    todo.setContents(todoRequestDto.getContents());
-    todo.setAuthor(todoRequestDto.getAuthor());
-    todo.setCompleted(todoRequestDto.isCompleted());
+    todo.setTitle(requestDto.getTitle());
+    todo.setContents(requestDto.getContents());
+    todo.setAuthor(requestDto.getAuthor());
+    todo.setCompleted(requestDto.isCompleted());
 
     given(todoRepository.save(any(Todo.class))).willReturn(todo);
 
     // when
-    TodoResponseDto saveTodo = todoService.createTodo(todoRequestDto, loginUser);
+    TodoResponseDto saveTodo = todoService.createTodo(requestDto, loginUser);
 
     // then
     assertNotNull(saveTodo);
     assertNotNull(saveTodo.getId());
-    assertEquals(todoRequestDto.getTitle(), saveTodo.getTitle());
-    assertEquals(todoRequestDto.getContents(), saveTodo.getContents());
-    assertEquals(todoRequestDto.getAuthor(), saveTodo.getAuthor());
-    assertEquals(todoRequestDto.isCompleted(), saveTodo.isCompleted());
+    assertEquals(requestDto.getTitle(), saveTodo.getTitle());
+    assertEquals(requestDto.getContents(), saveTodo.getContents());
+    assertEquals(requestDto.getAuthor(), saveTodo.getAuthor());
+    assertEquals(requestDto.isCompleted(), saveTodo.isCompleted());
   }
 
   @Test
   @DisplayName("할일카드 작성 - 실패(인증되지 않은 사용자)")
-  void Test2() {
+  void createTodoTestFailure() {
     // Given
-    TodoRequestDto todoRequestDto = new TodoRequestDto();
-    todoRequestDto.setTitle("할일카드 제목");
-    todoRequestDto.setContents("할일카드 내용");
-    todoRequestDto.setAuthor("작성자");
-    todoRequestDto.setCompleted(false);
+    TodoRequestDto requestDto = new TodoRequestDto();
+    requestDto.setTitle("title");
+    requestDto.setContents("content");
+    requestDto.setCompleted(false);
 
     User unauthenticatedUser = new User();
+    requestDto.setAuthor(unauthenticatedUser.getUsername());
 
     // when & then
     assertThrows(IllegalArgumentException.class, () -> {
       given(todoRepository.save(any(Todo.class))).willThrow(
           new IllegalArgumentException("인증되지 않은 사용자"));
-      todoService.createTodo(todoRequestDto, unauthenticatedUser);
+
+      todoService.createTodo(requestDto, unauthenticatedUser);
     });
   }
 
