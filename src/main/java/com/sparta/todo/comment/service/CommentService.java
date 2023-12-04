@@ -45,13 +45,14 @@ public class CommentService {
     Comment comment = getComment(commentId);
     commentRepository.delete(comment);
   }
-  public Long getAuthorIdByTodoId(Long todoId) {
-    Comment comment = commentRepository.findById(todoId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 할일카드를 찾을 수 없습니다."));
+
+  public Long getAuthorIdByCommentId(Long commentId) {
+    Comment comment = commentRepository.findById(commentId)
+        .orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
     return comment.getUser().getId();
   }
 
-  Comment getComment(Long commentId) {
+  public Comment getComment(Long commentId) {
     return commentRepository.findById(commentId)
         .orElseThrow(() -> new IllegalArgumentException("선택한 댓글이 존재하지 않습니다."));
   }

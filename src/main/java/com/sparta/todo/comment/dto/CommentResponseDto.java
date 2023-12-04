@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class CommentResponseDto {
 
-  private long id;
+  private Long id;
   private String comment;
   private String author;
   private LocalDateTime createdAt;

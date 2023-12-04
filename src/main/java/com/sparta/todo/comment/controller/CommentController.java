@@ -72,7 +72,7 @@ public class CommentController {
   }
 
   public boolean haveModifyAuthorization(User loginUser, Long id) {
-    Long authorId = commentService.getAuthorIdByTodoId(id);
+    Long authorId = commentService.getAuthorIdByCommentId(id);
     return loginUser.getId().equals(authorId);
   }
 }
