@@ -1,14 +1,12 @@
 package com.sparta.todo.todo.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.BDDMockito.given;
 
 import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.repository.TodoRepository;
 import com.sparta.todo.user.entity.User;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

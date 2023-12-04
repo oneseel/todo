@@ -1,12 +1,13 @@
 package com.sparta.todo.todo.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.repository.TodoRepository;
+import com.sparta.todo.user.entity.User;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-class GetTodoTest {
+class DeleteTodoTest {
 
   @Mock
   private TodoRepository todoRepository;
@@ -26,38 +26,39 @@ class GetTodoTest {
   private TodoService todoService;
 
   @Test
-  @DisplayName("할일카드 단건 조회 - 성공")
-  void getTodoTestSuccess() {
+  @DisplayName("할일카드 삭제 - 성공")
+  void deleteTodoTestSuccess() {
 
     // given
+    Long id = 1L;
     Todo todo = new Todo();
+    User user = new User();
     todo.setId(1L);
     todo.setTitle("title");
     todo.setContents("content");
+    todo.setAuthor(user.getUsername());
     todo.setCompleted(false);
 
-    given(todoRepository.findById(todo.getId())).willReturn(Optional.of(todo));
+    given(todoRepository.findById(id)).willReturn(Optional.of(todo));
 
     // when
-    TodoResponseDto responseDto = todoService.getTodo(todo.getId());
+    todoService.deleteTodo(id);
 
     // then
-    assertEquals(todo.getId(), responseDto.getId());
-    assertEquals(todo.getTitle(), responseDto.getTitle());
-    assertEquals(todo.getContents(), responseDto.getContents());
-    assertEquals(todo.isCompleted(), responseDto.isCompleted());
+    verify(todoRepository, times(1)).delete(todo);
   }
 
   @Test
-  @DisplayName("할일카드 단건 조회 - 실패(선택한 할일카드 없음)")
-  void getTodoTestFailure() {
+  @DisplayName("할일카드 삭제 - 실패(존재하지 않는 할일카드)")
+  void deleteTodoTestFailure() {
 
     // given
-    Long id = 2L; // 존재하지 않는 할일카드
+    Long id = 2L;
 
     given(todoRepository.findById(id)).willReturn(Optional.empty());
 
     // when, then
-    assertThrows(IllegalArgumentException.class, () -> todoService.getTodo(id));
+    assertThrows(IllegalArgumentException.class, () -> todoService.deleteTodo(id));
   }
+
 }
